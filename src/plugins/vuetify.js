@@ -8,6 +8,6 @@ Vue.use(Vuetify, {
   theme: {
     primary: colors.red.darken2, 
     secondary: colors.deepPurple.lighten1,
-    accent: colors.deepOrange.lighten1
+    accent: "#340A13",
   }
 })

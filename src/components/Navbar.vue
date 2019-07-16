@@ -1,6 +1,6 @@
 <template>
   <div class="nav">
-    <v-navigation-drawer dark temporary v-model="sideNav" fixed width="250px">
+    <v-navigation-drawer style="background: linear-gradient(to bottom right, #340a13 46%, #690f22 100%)" dark temporary v-model="sideNav" fixed width="250px">
       <v-layout column wrap>
         <v-flex>
           <Signup />
@@ -11,7 +11,7 @@
       </v-layout>
     </v-navigation-drawer>
 
-    <v-toolbar app dark clipped-left absolute>
+    <v-toolbar app style="background: linear-gradient(to right, #340a13 46%, #690f22 100%)" dark clipped-left absolute>
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">
           <span class="primary--text text-uppercase">List</span>

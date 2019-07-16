@@ -12,34 +12,34 @@
     </v-parallax>
 
     <v-container class="pa-0" fluid>
-      <v-layout row wrap class="text-xs-center" justify-center style="background: #262626">
-        <v-flex xs12 sm3>
-          <v-card color="rgb(0, 0, 0, 0)" flat dark class="py-5">
+      <v-layout row wrap class="text-xs-center" justify-center style="background: linear-gradient(to bottom right, #340a13 46%, #690f22 100%)">
+        <v-flex xs12 sm3 xl4>
+          <v-card color="rgb(0, 0, 0, 0)" dark flat class="py-5">
             <v-card-text>
-              <h2 class="display-4 font-weight-thin text-uppercase">13</h2>
+              <h2 class="display-4 font-weight-thin text-uppercase white--text">13</h2>
             </v-card-text>
             <v-card-text>
-              <h2 class="display-1 font-weight-thin text-uppercase">Series</h2>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-        <v-flex xs12 sm3>
-          <v-card color="rgb(0, 0, 0, 0)" flat dark class="py-5">
-            <v-card-text>
-              <h2 class="display-4 font-weight-thin text-uppercase">78</h2>
-            </v-card-text>
-            <v-card-text>
-              <h2 class="display-1 font-weight-thin text-uppercase">Seasons</h2>
+              <h2 class="display-1 font-weight-thin text-uppercase white--text">Series</h2>
             </v-card-text>
           </v-card>
         </v-flex>
-        <v-flex xs12 sm3>
-          <v-card color="rgb(0, 0, 0, 0)" flat dark class="py-5">
+        <v-flex xs12 sm3 xl4>
+          <v-card color="rgb(0, 0, 0, 0)" dark flat class="py-5">
             <v-card-text>
-              <h2 class="display-4 font-weight-thin text-uppercase">156</h2>
+              <h2 class="display-4 font-weight-thin text-uppercase white--text">78</h2>
             </v-card-text>
             <v-card-text>
-              <h2 class="display-1 font-weight-thin text-uppercase">Episodes</h2>
+              <h2 class="display-1 font-weight-thin text-uppercase white--text">Seasons</h2>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs12 sm3 xl4>
+          <v-card color="rgb(0, 0, 0, 0)" dark flat class="py-5">
+            <v-card-text>
+              <h2 class="display-4 font-weight-thin text-uppercase white--text">156</h2>
+            </v-card-text>
+            <v-card-text>
+              <h2 class="display-1 font-weight-thin text-uppercase white--text">Episodes</h2>
             </v-card-text>
           </v-card>
         </v-flex>
