@@ -14,7 +14,7 @@
     <v-container class="pa-0" fluid>
       <v-layout row wrap class="text-xs-center" justify-center style="background: linear-gradient(to bottom right, #340a13 46%, #690f22 100%)">
         <v-flex xs12 sm3 xl4>
-          <v-card color="rgb(0, 0, 0, 0)" dark flat class="py-5">
+          <v-card dark color="#340a13" flat class="py-5">
             <v-card-text>
               <h2 class="display-4 font-weight-thin text-uppercase white--text">13</h2>
             </v-card-text>
@@ -24,7 +24,7 @@
           </v-card>
         </v-flex>
         <v-flex xs12 sm3 xl4>
-          <v-card color="rgb(0, 0, 0, 0)" dark flat class="py-5">
+          <v-card dark color="#340a13" flat class="py-5">
             <v-card-text>
               <h2 class="display-4 font-weight-thin text-uppercase white--text">78</h2>
             </v-card-text>
@@ -34,7 +34,7 @@
           </v-card>
         </v-flex>
         <v-flex xs12 sm3 xl4>
-          <v-card color="rgb(0, 0, 0, 0)" dark flat class="py-5">
+          <v-card dark color="red" flat class="py-5">
             <v-card-text>
               <h2 class="display-4 font-weight-thin text-uppercase white--text">156</h2>
             </v-card-text>
@@ -42,6 +42,16 @@
               <h2 class="display-1 font-weight-thin text-uppercase white--text">Episodes</h2>
             </v-card-text>
           </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+
+    <v-container class="pa-0" fluid>
+      <v-layout row wrap>
+        <v-flex xs12 md8>
+          <v-carousel hide-controls height="400">
+            <v-carousel-item v-for="(img, index) in imgs" :key="index" :src="img"></v-carousel-item>
+          </v-carousel>
         </v-flex>
       </v-layout>
     </v-container>
@@ -55,7 +65,11 @@
     name: 'Home',
     data () {
       return {
-        
+        imgs: [
+          require('@/assets/slider/sl1.jpg'),
+          require('@/assets/slider/sl2.jpg'),
+          require('@/assets/slider/sl3.jpeg')
+        ]
       }
     }
   }

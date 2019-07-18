@@ -1,11 +1,17 @@
 <template>
   <div class="nav">
     <v-navigation-drawer style="background: linear-gradient(to bottom right, #340a13 46%, #690f22 100%)" dark temporary v-model="sideNav" fixed width="250px">
-      <v-layout column wrap>
-        <v-flex>
+      <v-layout column wrap align-center>
+        <v-flex xs12 mb-5 mt-3>
+          <router-link to="/" tag="span" style="cursor: pointer" mb-4>
+            <span class="primary--text text-uppercase title">List</span>
+            <span class="text-uppercase white--text font-weight-light title">Series</span>
+          </router-link>
+        </v-flex>
+        <v-flex xs12>
           <Signup />
         </v-flex>
-        <v-flex>
+        <v-flex xs12>
           <Login />
         </v-flex>
       </v-layout>
