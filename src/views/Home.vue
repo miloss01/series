@@ -76,6 +76,36 @@
         </v-flex>
       </v-layout>
     </v-container>
+
+    <v-container class="pa-0" fluid>
+      <v-layout row wrap class="text-xs-center">
+        <v-flex xs12>
+          <v-card tile class="py-2">
+            <v-card-text>
+              <h2 class="display-1 font-weight-thick text-uppercase primary--text">sign up for newsletter</h2>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
+        <v-flex xs12>
+          <v-parallax height="300" :src="require('@/assets/images/newsletter.jpg')">
+            <v-layout align-center column justify-center>
+              <v-flex xs4>
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <v-text-field dark color="white" type="email" label="Email" prepend-icon="email"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-btn block color="white" outline depressed>Apply to newsletter</v-btn>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+            </v-layout>
+          </v-parallax>
+        </v-flex>
+      </v-layout>
+    </v-container>
   </div>
 </template>
 
