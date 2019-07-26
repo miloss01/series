@@ -51,7 +51,7 @@
         <v-flex xs12>
           <v-card tile class="py-2">
             <v-card-text>
-              <h2 class="display-1 font-weight-thick text-uppercase primary--text">what do we offer</h2>
+              <h2 class="headline font-weight-light text-uppercase primary--text">our offers</h2>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -76,13 +76,39 @@
         </v-flex>
       </v-layout>
     </v-container>
+<!-- offline, responsive, feedback (support), free -->
+    <v-container class="pa-0" fluid>
+      <v-layout row wrap class="text-xs-center">
+        <v-flex xs12>
+          <v-card tile class="py-2">
+            <v-card-text>
+              <h2 class="headline font-weight-light text-uppercase primary--text">features</h2>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs12>
+          <v-layout row wrap class="text-xs-center" justify-center>
+            <v-flex xs4 md2 mx-2 my-5 v-for="feature in features" :key="feature.title" class="text-xs-center">
+              <v-card tile color="#f2f2f2" flat>
+                <v-card-text>
+                  <v-icon size="70" color="primary lighten-2">{{ feature.icon }}</v-icon>
+                </v-card-text>
+                <v-card-text>
+                  <h2 class="subheading font-weight-light text-uppercase primary--text">{{ feature.title }}</h2>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+    </v-container>
 
     <v-container class="pa-0" fluid>
       <v-layout row wrap class="text-xs-center">
         <v-flex xs12>
           <v-card tile class="py-2">
             <v-card-text>
-              <h2 class="display-1 font-weight-thick text-uppercase primary--text">sign up for newsletter</h2>
+              <h2 class="headline font-weight-light text-uppercase primary--text">newsletter</h2>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -128,6 +154,12 @@
           { name: 'seasons', number: '78', color: '#f2f2f2' },
           { name: 'episodes', number: '156', color: '#f2f2f2' },
           { name: 'users', number: '93', color: '#f2f2f2' }
+        ],
+        features: [
+          { title: 'Online', icon: 'signal_wifi_4_bar'},
+          { title: 'Responsive', icon: 'mobile_friendly'},
+          { title: 'Support', icon: 'contact_support'},
+          { title: 'Free', icon: 'credit_card'}
         ]
       }
     }
