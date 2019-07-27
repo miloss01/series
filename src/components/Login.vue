@@ -3,7 +3,8 @@
     <v-btn flat slot="activator">
       <span>Log in</span>
     </v-btn>
-    <v-card dark>
+    <form @submit.prevent="login">
+      <v-card dark>
         <v-card-title>
           <span class="title font-weight-light">Log in</span>
         </v-card-title>
@@ -11,10 +12,10 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-text-field label="Email*" required></v-text-field>
+                <v-text-field label="Email*" v-model="email"></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-text-field label="Password*" type="password" required></v-text-field>
+                <v-text-field label="Password*" type="password" v-model="password"></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
@@ -23,9 +24,10 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary lighten-1" flat @click="loginDialog = false">Close</v-btn>
-          <v-btn color="green darken-2" flat>Log in</v-btn>
+          <v-btn type="submit" color="green darken-2" flat>Log in</v-btn>
         </v-card-actions>
       </v-card>
+    </form>
   </v-dialog>
 </template>
 
@@ -34,7 +36,15 @@ export default {
   name: 'Login',
   data () {
     return {
-      loginDialog: false
+      loginDialog: false,
+      email: null,
+      password: null
+    }
+  },
+  methods: {
+    login () {
+      this.$store.dispatch('login', {email: this.email, password: this.password})
+      this.$router.push({ name: 'add' })
     }
   }
 }

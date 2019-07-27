@@ -2,10 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Add from './views/Add.vue'
+import firebase from 'firebase'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -17,7 +18,10 @@ export default new Router({
     {
       path: '/add',
       name: 'add',
-      component: Add
+      component: Add,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/about',
@@ -29,3 +33,16 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(rec => rec.meta.requiresAuth)) {
+    if(firebase.auth().currentUser)
+      next()
+    else
+      next({ name: 'home' })
+  } else {
+    next()
+  }
+})
+
+export default router

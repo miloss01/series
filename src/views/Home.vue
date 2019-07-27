@@ -7,7 +7,7 @@
           <span class="white--text">Series</span>
         </h1>
         <h4 class="subheading mb-5">Check your series and keep notes of progress!</h4>
-        <v-btn color="white" outline depressed to="/add">List series</v-btn>
+        <v-btn color="white" outline depressed :to="{ name: 'add' }">List series</v-btn>
       </v-layout>
     </v-parallax>
 

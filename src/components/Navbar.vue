@@ -10,10 +10,15 @@
         </v-flex>
         <hr width="70%">
         <v-flex xs12 mt-3>
-          <Login />
+          <Login v-if="!userIsAuth"></Login>
         </v-flex>
         <v-flex xs12>
-          <Signup />
+          <Signup v-if="!userIsAuth"></Signup>
+        </v-flex>
+        <v-flex xs12>
+          <v-btn flat v-if="userIsAuth" @click="logout">
+            <span>Logout</span>
+          </v-btn>
         </v-flex>
       </v-layout>
     </v-navigation-drawer>
@@ -27,8 +32,11 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon>
-      <Login class="hidden-xs-only"></Login>
-      <Signup class="hidden-xs-only"></Signup>
+      <Login class="hidden-xs-only" v-if="!userIsAuth"></Login>
+      <Signup class="hidden-xs-only" v-if="!userIsAuth"></Signup>
+      <v-btn class="hidden-xs-only" flat v-if="userIsAuth" @click="logout">
+        <span>Logout</span>
+      </v-btn>
     </v-toolbar>
   </div>
 </template>
@@ -46,6 +54,17 @@ export default {
   data () {
     return {
       sideNav: false
+    }
+  },
+  computed: {
+    userIsAuth () {
+      return this.$store.getters.user !== null && this.$store.getters.user !== undefined
+    }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('logout')
+      this.$router.push({ name: 'home' })
     }
   }
 }

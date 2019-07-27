@@ -38,8 +38,6 @@
 </template>
 
 <script>
-  import { db } from '@/firebase'
-
   export default {
     name: 'Add',
     data () {
@@ -55,12 +53,6 @@
           'Crime', 'Drama', 'Mistery', 'Comedy', 'Horror', 'Sci-Fi', 'Comedy', 'Horror', 'Sci-Fi' 
         ]
       }
-    },
-    computed: {
-      
-    },
-    methods: {
-      
     }
   }
 </script>
