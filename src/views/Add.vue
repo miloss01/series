@@ -1,37 +1,46 @@
 <template>
   <div class="add">
-    <h3 class="secondary--text mx-1 my-3 font-weight-light text-uppercase">add new title</h3>
     <v-container>
-      <v-layout row wrap>
-        <v-flex xs12 sm6 md4 lg3>
-          <v-text-field label="Title" v-model="title" required></v-text-field>
-        </v-flex>
+      <v-layout row wrap justify-center>
+        <v-card max-width="600" class="pa-3">
+          <v-card-title>
+            <h2 class="headline font-weight-light text-uppercase primary--text">add new serie</h2>
+          </v-card-title>
+          <v-form>
+            <v-layout row wrap>
+              <v-flex xs12>
+                <v-text-field label="Title" v-model="serie.title"></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm4>
+                <v-text-field min="0" step="1" type="number" label="Start year" v-model="serie.startYear"></v-text-field>
+              </v-flex>
+              <v-spacer></v-spacer>
+              <v-flex xs12 sm4>
+                <v-text-field min="0" step="1" type="number" label="End or current year" v-model="serie.endYear"></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-radio-group v-model="serie.status">
+                  <v-radio 
+                    v-for="(status, index) in statuses" 
+                    :key="index" 
+                    :label="status.label" 
+                    :value="status.name"
+                    :color="status.color">
+                  </v-radio>
+                </v-radio-group>
+              </v-flex>
+              <v-flex xs12>
+                <v-combobox hide-no-data hide-selected dense label="Category" :items="categories" multiple chips deletable-chips v-model="serie.category"></v-combobox>
+              </v-flex>
+              <v-flex xs12>
+                <v-combobox hide-no-data hide-selected dense label="Actors" :items="actors" multiple chips deletable-chips v-model="serie.actors"></v-combobox>
+              </v-flex> 
+            </v-layout>
+          </v-form>
+        </v-card>
       </v-layout>
       <v-layout row wrap>
-        <v-flex xs12 sm6 md4 lg3>
-          <v-radio-group v-model="status">
-            <v-radio 
-              v-for="(status, index) in statuses" 
-              :key="index" 
-              :label="status.status" 
-              :value="status.status"
-              :color="status.color">
-            </v-radio>
-          </v-radio-group>
-        </v-flex>
-      </v-layout>
-      <v-layout row wrap>
-        <v-flex xs3 sm6 md2 lg1 v-for="(item, index) in genres" :key="index" my-1>
-          <v-checkbox 
-            color="secondary" 
-            :label="item" 
-            :value="item"
-            v-model="genre">
-          </v-checkbox>
-        </v-flex>
-      </v-layout>
-      <v-layout row wrap>
-        {{ genre }}
+        {{ serie }}
       </v-layout>
     </v-container>
   </div>
@@ -42,15 +51,23 @@
     name: 'Add',
     data () {
       return {
-        status: null,
-        title: null,
-        genre: [],
+        serie: {
+          title: null,
+          startYear: null,
+          endYear: null,
+          status: null,
+          category: null,
+          actors: null
+        },
         statuses: [
-          {status: 'Ongoing', color: 'green'},
-          {status: 'Finished', color: 'red'}
+          { label: 'Ongoing', name: 'ongoing', color: 'green' },
+          { label: 'Finished', name: 'finished', color: 'red' }
         ],
-        genres: [
-          'Crime', 'Drama', 'Mistery', 'Comedy', 'Horror', 'Sci-Fi', 'Comedy', 'Horror', 'Sci-Fi' 
+        actors: [
+          'Megan Boone', 'Jackie Chan', 'Bradley Cooper', 'Harrison Ford'
+        ],
+        categories: [
+          'Crime', 'Drama', 'Mistery', 'Comedy', 'Horror', 'Sci-Fi'
         ]
       }
     }
