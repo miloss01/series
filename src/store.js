@@ -7,18 +7,25 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    currentUser: null
+    currentUser: null,
+    serie: null
   },
 
   getters: {
     user (state) {
       return state.currentUser
+    },
+    serie (state) {
+      return state.serie
     }
   },
 
   mutations: {
     setUser (state, payload) {
       state.currentUser = payload
+    },
+    setSerie (state, payload) {
+      state.serie = payload
     }
   },
 
@@ -64,6 +71,39 @@ export default new Vuex.Store({
       .then(() => {
         commit('setUser', null)
       })
+    },
+
+    uploadSerie ({commit, getters}, payload) {
+      const serie = {
+        title: payload.title,
+        startYear: payload.startYear,
+        endYear: payload.endYear,
+        status: payload.status,
+        category: payload.category,
+        actors: payload.actors,
+        description: payload.description
+      }
+      commit('setSerie', serie)
+      db.collection('series').doc(serie.title).set(serie)
+      .then(() => {
+        return firebase.storage().ref('series/' + payload.image.name).put(payload.image)
+      })
+      .then(async () => {
+        const url = await firebase.storage().ref('series/' + payload.image.name).getDownloadURL();
+        commit('setSerie', {
+          ...serie,
+          imageUrl: url
+        });
+      })
+      .then(() => {
+        return db.collection('series').doc(payload.title).update({ imageUrl: getters.serie.imageUrl })
+      })
+      // .then((downloadURL) => {
+      //   console.log(downloadURL)
+      //   db.collection('series').doc(payload.title).update({ imageUrl: downloadURL })
+      // })
+      .then(() => alert('Uspesno ubacivanje serije'))
+      .catch(error => console.log(error))
     }
   }
 })
