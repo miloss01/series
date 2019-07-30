@@ -46,7 +46,7 @@
                 <img :src="serie.imageUrl" style="max-width: 100%; max-height: 350px">
               </v-flex>
             </v-layout>
-            <v-btn type="submit" outline color="primary">Upload</v-btn>
+            <v-btn type="submit" outline color="primary" :disabled="!formValidation">Upload</v-btn>
           </v-form>
         </v-card>
       </v-layout>
@@ -70,15 +70,16 @@
           category: null,
           actors: null,
           description: null,
-          image: null,
           imageUrl: null
         },
+        image: null,
         statuses: [
           { label: 'Ongoing', name: 'ongoing', color: 'green' },
           { label: 'Finished', name: 'finished', color: 'red' }
         ],
         actors: [
           'Megan Boone', 
+          'James Spader',
           'Jackie Chan', 
           'Bradley Cooper', 
           'Harrison Ford',
@@ -93,15 +94,15 @@
     computed: {
       formValidation () {
         if (
-          this.title &&
-          this.startYear &&
-          this.endYear &&
-          this.status &&
-          this.category &&
-          this.actors &&
-          this.description &&
+          this.serie.title &&
+          this.serie.startYear &&
+          this.serie.endYear &&
+          this.serie.status &&
+          this.serie.category &&
+          this.serie.actors &&
+          this.serie.description &&
           this.image &&
-          this.imageUrl 
+          this.serie.imageUrl 
           ) return true
           else return false
       }
@@ -111,17 +112,8 @@
         this.$refs.fileInput.click()
       },
       pickFIle (event) {
-        const files = event.target.files
-        let filename = files[0].name
-        if (filename.lastIndexOf('.') <= 0) {
-          return alert('Please add a valid file!')
-        }
-        const fileReader = new FileReader()
-        fileReader.addEventListener('load', () => {
-          this.serie.imageUrl = fileReader.result
-        })
-        fileReader.readAsDataURL(files[0])
-        this.serie.image = files[0]
+        this.serie.imageUrl = URL.createObjectURL(event.target.files[0])
+        this.image = event.target.files[0]
       },
       addSerie () {
         const newSerie = {
@@ -132,7 +124,7 @@
           category: this.serie.category,
           actors: this.serie.actors,
           description: this.serie.description,
-          image: this.serie.image,
+          image: this.image,
           imageUrl: this.serie.imageUrl
         }
         this.$store.dispatch('uploadSerie', newSerie)

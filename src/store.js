@@ -86,10 +86,10 @@ export default new Vuex.Store({
       commit('setSerie', serie)
       db.collection('series').doc(serie.title).set(serie)
       .then(() => {
-        return firebase.storage().ref('series/' + payload.image.name).put(payload.image)
+        return firebase.storage().ref('series/' + payload.title).put(payload.image)
       })
       .then(async () => {
-        const url = await firebase.storage().ref('series/' + payload.image.name).getDownloadURL();
+        const url = await firebase.storage().ref('series/' + payload.title).getDownloadURL();
         commit('setSerie', {
           ...serie,
           imageUrl: url
@@ -98,12 +98,8 @@ export default new Vuex.Store({
       .then(() => {
         return db.collection('series').doc(payload.title).update({ imageUrl: getters.serie.imageUrl })
       })
-      // .then((downloadURL) => {
-      //   console.log(downloadURL)
-      //   db.collection('series').doc(payload.title).update({ imageUrl: downloadURL })
-      // })
-      .then(() => alert('Uspesno ubacivanje serije'))
-      .catch(error => console.log(error))
+      .then(() => alert('Upload is successful.'))
+      .catch(error => console.log(error) )
     }
   }
 })
