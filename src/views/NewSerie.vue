@@ -1,5 +1,5 @@
 <template>
-  <div class="add">
+  <div class="new-serie">
     <v-container>
       <v-layout row wrap justify-center>
         <v-card max-width="600" class="pa-3">
@@ -40,7 +40,7 @@
               </v-flex>
               <v-flex xs12>
                 <v-btn @click="refEvent" outline color="primary">Image</v-btn>
-                <input type="file" style="display: none" ref="fileInput" accept="image/*" @change="pickFIle">
+                <input type="file" style="display: none" ref="fileInput" accept="image/*" @change="pickFile">
               </v-flex>
               <v-flex xs12 my-3>
                 <img :src="serie.imageUrl" style="max-width: 100%; max-height: 350px">
@@ -59,7 +59,7 @@
 
 <script>
   export default {
-    name: 'Add',
+    name: 'NewSerie',
     data () {
       return {
         serie: {
@@ -70,9 +70,9 @@
           category: null,
           actors: null,
           description: null,
-          imageUrl: null
+          imageUrl: null,
+          image: null
         },
-        image: null,
         statuses: [
           { label: 'Ongoing', name: 'ongoing', color: 'green' },
           { label: 'Finished', name: 'finished', color: 'red' }
@@ -80,9 +80,10 @@
         actors: [
           'Megan Boone', 
           'James Spader',
-          'Jackie Chan', 
-          'Bradley Cooper', 
-          'Harrison Ford',
+          'Tony Shalshoub', 
+          'Traylor Howard', 
+          'Simon Baker',
+          "Robin Tunney",
           'Tom Ellis',
           'Lauren German'
         ],
@@ -101,7 +102,7 @@
           this.serie.category &&
           this.serie.actors &&
           this.serie.description &&
-          this.image &&
+          this.serie.image &&
           this.serie.imageUrl 
           ) return true
           else return false
@@ -111,9 +112,9 @@
       refEvent () {
         this.$refs.fileInput.click()
       },
-      pickFIle (event) {
+      pickFile (event) {
         this.serie.imageUrl = URL.createObjectURL(event.target.files[0])
-        this.image = event.target.files[0]
+        this.serie.image = event.target.files[0]
       },
       addSerie () {
         const newSerie = {
@@ -124,7 +125,7 @@
           category: this.serie.category,
           actors: this.serie.actors,
           description: this.serie.description,
-          image: this.image,
+          image: this.serie.image,
           imageUrl: this.serie.imageUrl
         }
         this.$store.dispatch('uploadSerie', newSerie)

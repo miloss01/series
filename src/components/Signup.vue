@@ -60,7 +60,7 @@ export default {
         lastName: this.lastName
       }
       this.$store.dispatch('signup', newUser)
-      this.$router.push({ name: 'add' })
+      this.$router.push({ name: 'new-serie' })
     }
   }
 }

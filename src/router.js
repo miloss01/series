@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Add from './views/Add.vue'
+import NewSerie from './views/NewSerie.vue'
+import NewActor from './views/NewActor.vue'
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -16,9 +17,17 @@ const router = new Router({
       component: Home
     },
     {
-      path: '/add',
-      name: 'add',
-      component: Add,
+      path: '/new/serie',
+      name: 'new-serie',
+      component: NewSerie,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/new/actor',
+      name: 'new-actor',
+      component: NewActor,
       meta: {
         requiresAuth: true
       }

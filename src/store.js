@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import router from '@/router'
 import firebase from 'firebase'
 import { db } from '@/firebase'
 
@@ -8,7 +9,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     currentUser: null,
-    serie: null
+    serie: null,
+    actor: null
   },
 
   getters: {
@@ -17,6 +19,9 @@ export default new Vuex.Store({
     },
     serie (state) {
       return state.serie
+    },
+    actor (state) {
+      return state.actor
     }
   },
 
@@ -26,6 +31,9 @@ export default new Vuex.Store({
     },
     setSerie (state, payload) {
       state.serie = payload
+    },
+    setActor (state, payload) {
+      state.actor = payload
     }
   },
 
@@ -44,7 +52,10 @@ export default new Vuex.Store({
           id: user.user.uid
         }
         db.collection('users').doc(dbUser.id).set(dbUser)
-        .then(() => commit('setUser', newUser))
+        .then(() => {
+          commit('setUser', newUser)
+          router.push({ name: 'new-serie' })
+        })
         .catch(err => console.log(err.message))
       })
     },
@@ -56,7 +67,9 @@ export default new Vuex.Store({
           id: user.user.uid
         }
         commit('setUser', newUser)
+        router.push({ name: 'new-serie' })
       })
+      .catch((error) => console.log(error))
     },
 
     autoLogin ({commit}, payload) {
@@ -98,7 +111,31 @@ export default new Vuex.Store({
       .then(() => {
         return db.collection('series').doc(payload.title).update({ imageUrl: getters.serie.imageUrl })
       })
-      .then(() => alert('Upload is successful.'))
+      .then(() => alert('Serie is uploaded successfuly.'))
+      .catch(error => console.log(error) )
+    },
+
+    uploadActor ({commit, getters}, payload) {
+      const actor = {
+        firstName: payload.firstName,
+        lastName: payload.lastName
+      }
+      commit('setActor', actor)
+      db.collection('actors').doc(actor.firstName + ' ' + actor.lastName).set(actor)
+      .then(() => {
+        return firebase.storage().ref('actors/' + payload.firstName + ' ' + payload.lastName).put(payload.image)
+      })
+      .then(async () => {
+        const url = await firebase.storage().ref('actors/' + payload.firstName + ' ' + payload.lastName).getDownloadURL()
+        commit('setActor', {
+          ...actor,
+          imageUrl: url
+        });
+      })
+      .then(() => {
+        return db.collection('actors').doc(actor.firstName + ' ' + actor.lastName).update({ imageUrl: getters.actor.imageUrl })
+      })
+      .then(() => alert('Actor is uploaded successfuly.'))
       .catch(error => console.log(error) )
     }
   }
