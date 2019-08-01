@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import NewSerie from './views/NewSerie.vue'
 import NewActor from './views/NewActor.vue'
+import Preview from './views/Preview.vue'
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -28,6 +29,14 @@ const router = new Router({
       path: '/new/actor',
       name: 'new-actor',
       component: NewActor,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/preview',
+      name: 'preview',
+      component: Preview,
       meta: {
         requiresAuth: true
       }

@@ -43,7 +43,8 @@ export default {
         lastName: null,
         imageUrl: null,
         image: null
-      }
+      },
+      actors: []
     }
   },
   computed: {
