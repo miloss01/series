@@ -7,14 +7,13 @@
             <v-card-title style="background-color: #f2f0eb">
               <h2 class="subheader font-weight-light text-uppercase secondary--text">users</h2>
               <v-spacer></v-spacer>
-              <v-text-field
-                v-model="search"
-                append-icon="search"
-                label="Search"
-                single-line
-                hide-details
-              ></v-text-field>
+              <v-btn depressed color="primary" :disabled="ifSelected" @click="deleteSelected">Delete selected</v-btn>
             </v-card-title>
+            <v-card-text>
+              <v-flex xs12 sm6>
+                <v-text-field max-width="200" v-model="search" append-icon="search" label="Search"></v-text-field>
+              </v-flex>
+            </v-card-text>
           </v-card>
           <v-data-table :headers="headers" :items="users" :search="search" v-model="selected" select-all item-key="id">
             <template slot="headerCell" slot-scope="props">
@@ -41,21 +40,21 @@
             </template>
           </v-data-table>
         </v-flex>
-        {{ showSelected }}
       </v-layout>
     </v-container>
   </div>
 </template>
 
 <script>
+import firebase from 'firebase'
 import { db } from '@/firebase'
+import functions from 'firebase/functions'
 
 export default {
-  name: 'Preview',
+  name: 'ShowUsers',
   data () {
     return {
       users: [],
-      ids: [],
       search: '',
       selected: [],
       headers: [
@@ -68,12 +67,19 @@ export default {
     }
   },
   computed: {
-    showSelected () {
-      this.ids = []
-      this.selected.forEach((item) => {
-        this.ids.push(item.id)
+    ifSelected () {
+      if (this.selected.length === 0) 
+        return true
+      else 
+        return false
+    }
+  },
+  methods: {
+    deleteSelected () {
+      let deleteUser = firebase.functions().httpsCallable('deleteUser')
+      this.selected.forEach(user => {
+        deleteUser({ id: user.id })
       })
-      return console.log(this.ids)
     }
   },
   firestore: {
