@@ -33,7 +33,7 @@
                 <v-combobox hide-no-data hide-selected dense label="Category" :items="categories" multiple chips deletable-chips v-model="serie.category"></v-combobox>
               </v-flex>
               <v-flex xs12>
-                <v-combobox hide-no-data hide-selected dense label="Actors" :items="actors" multiple chips deletable-chips v-model="serie.actors"></v-combobox>
+                <v-combobox hide-no-data hide-selected dense label="Actors" :items="showActors" multiple chips deletable-chips v-model="serie.actors"></v-combobox>
               </v-flex> 
               <v-flex xs12>
                 <v-textarea auto-grow label="Description" v-model="serie.description"></v-textarea>
@@ -58,6 +58,8 @@
 </template>
 
 <script>
+  import { db } from '@/firebase'
+
   export default {
     name: 'NewSerie',
     data () {
@@ -74,25 +76,26 @@
           image: null
         },
         statuses: [
-          { label: 'Ongoing', name: 'ongoing', color: 'green' },
-          { label: 'Finished', name: 'finished', color: 'red' }
+          { label: 'Ongoing', name: 'Ongoing', color: 'green' },
+          { label: 'Finished', name: 'Finished', color: 'red' }
         ],
-        actors: [
-          'Megan Boone', 
-          'James Spader',
-          'Tony Shalshoub', 
-          'Traylor Howard', 
-          'Simon Baker',
-          "Robin Tunney",
-          'Tom Ellis',
-          'Lauren German'
-        ],
+        actors: [],
+        actorsInCombobox: [],
         categories: [
           'Crime', 'Drama', 'Mistery', 'Comedy', 'Horror', 'Sci-Fi'
         ]
       }
     },
+    firestore: {
+      actors: db.collection('actors')
+    },
     computed: {
+      showActors () {
+        this.actors.forEach(actor => {
+          this.actorsInCombobox.push(actor.firstName + ' ' + actor.lastName)
+        })
+        return this.actorsInCombobox
+      },
       formValidation () {
         if (
           this.serie.title &&
@@ -129,6 +132,18 @@
           imageUrl: this.serie.imageUrl
         }
         this.$store.dispatch('uploadSerie', newSerie)
+        this.clearForm()
+      },
+      clearForm () {
+        this.serie.title = null
+        this.serie.startYear = null
+        this.serie.endYear = null
+        this.serie.status = null
+        this.serie.category = null
+        this.serie.actors = null
+        this.serie.description = null
+        this.serie.imageUrl = null
+        this.serie.image = null
       }
     }
   }

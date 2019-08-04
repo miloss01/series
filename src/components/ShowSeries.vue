@@ -1,11 +1,11 @@
 <template>
-  <div class="show-users">
+  <div class="show-series">
     <v-container>
       <v-layout row wrap justify-center>
         <v-flex xs12>
           <v-card flat>
-            <v-card-title style="background-color: #346beb">
-              <h2 class="subheader font-weight-light text-uppercase white--text">users</h2>
+            <v-card-title style="background-color: #eb4034">
+              <h2 class="subheader font-weight-light text-uppercase white--text">series</h2>
               <v-spacer></v-spacer>
               <v-btn outline dark depressed flat :disabled="ifSelected" @click="deleteSelected">Delete selected</v-btn>
             </v-card-title>
@@ -15,7 +15,7 @@
               </v-flex>
             </v-card-text>
           </v-card>
-          <v-data-table :headers="headers" :items="users" :search="search" v-model="selected" select-all item-key="id">
+          <v-data-table :headers="headers" :items="series" :search="search" v-model="selected" select-all item-key="title">
             <template slot="headerCell" slot-scope="props">
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
@@ -32,11 +32,16 @@
               <td>
                 <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
               </td>
-              <td class="text-xs-left">{{ props.item.firstName }}</td>
-              <td class="text-xs-left">{{ props.item.lastName }}</td>
-              <td class="text-xs-left">{{ props.item.email }}</td>
-              <td class="text-xs-left">{{ props.item.password }}</td>
-              <td class="text-xs-left">{{ props.item.id }}</td>
+              <td class="text-xs-left">
+                <img :src="props.item.imageUrl" alt="No image." width="150" height="90">
+              </td>
+              <td class="text-xs-left">{{ props.item.title }}</td>
+              <td class="text-xs-left">{{ props.item.status }}</td>
+              <td class="text-xs-left">{{ props.item.startYear }}</td>
+              <td class="text-xs-left">{{ props.item.endYear }}</td>
+              <td class="text-xs-left">{{ props.item.actors.join(', ') }}</td>
+              <td class="text-xs-left">{{ props.item.category.join(', ') }}</td>
+              <td class="text-xs-left">{{ props.item.description }}</td>
             </template>
           </v-data-table>
         </v-flex>
@@ -51,18 +56,21 @@ import { db } from '@/firebase'
 import functions from 'firebase/functions'
 
 export default {
-  name: 'ShowUsers',
+  name: 'ShowSeries',
   data () {
     return {
-      users: [],
+      series: [],
       search: '',
       selected: [],
       headers: [
-        { text: 'First name', value: 'firstName' },
-        { text: 'Last name', value: 'lastName' },
-        { text: 'Email', value: 'email' },
-        { text: 'Password', value: 'password' },
-        { text: 'User ID', value: 'id' }
+        { text: 'Thumbnail', value: 'thumbnail' },
+        { text: 'Title', value: 'title' },
+        { text: 'Status', value: 'status' },
+        { text: 'Start year', value: 'startyear' },
+        { text: 'End year', value: 'endorcurrentyear' },
+        { text: 'Actors', value: 'actors' },
+        { text: 'Category', value: 'category' },
+        { text: 'Description', value: 'description' }
       ]
     }
   },
@@ -76,14 +84,14 @@ export default {
   },
   methods: {
     deleteSelected () {
-      let deleteUser = firebase.functions().httpsCallable('deleteUser')
-      this.selected.forEach(user => {
-        deleteUser({ id: user.id })
+      let deleteSerie = firebase.functions().httpsCallable('deleteSerie')
+      this.selected.forEach(serie => {
+        deleteSerie({ title: serie.title })
       })
     }
   },
   firestore: {
-    users: db.collection('users')
+    series: db.collection('series')
   }
 }
 </script>

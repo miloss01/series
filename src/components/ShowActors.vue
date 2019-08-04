@@ -1,11 +1,11 @@
 <template>
-  <div class="show-users">
+  <div class="show-actors">
     <v-container>
       <v-layout row wrap justify-center>
         <v-flex xs12>
           <v-card flat>
-            <v-card-title style="background-color: #346beb">
-              <h2 class="subheader font-weight-light text-uppercase white--text">users</h2>
+            <v-card-title style="background-color: #37eb34">
+              <h2 class="subheader font-weight-light text-uppercase white--text">actors</h2>
               <v-spacer></v-spacer>
               <v-btn outline dark depressed flat :disabled="ifSelected" @click="deleteSelected">Delete selected</v-btn>
             </v-card-title>
@@ -15,7 +15,7 @@
               </v-flex>
             </v-card-text>
           </v-card>
-          <v-data-table :headers="headers" :items="users" :search="search" v-model="selected" select-all item-key="id">
+          <v-data-table :headers="headers" :items="actors" :search="search" v-model="selected" select-all item-key="firstName">
             <template slot="headerCell" slot-scope="props">
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
@@ -32,11 +32,11 @@
               <td>
                 <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
               </td>
+              <td class="text-xs-left">
+                <img :src="props.item.imageUrl" alt="No image." width="110" height="90">
+              </td>
               <td class="text-xs-left">{{ props.item.firstName }}</td>
               <td class="text-xs-left">{{ props.item.lastName }}</td>
-              <td class="text-xs-left">{{ props.item.email }}</td>
-              <td class="text-xs-left">{{ props.item.password }}</td>
-              <td class="text-xs-left">{{ props.item.id }}</td>
             </template>
           </v-data-table>
         </v-flex>
@@ -51,18 +51,16 @@ import { db } from '@/firebase'
 import functions from 'firebase/functions'
 
 export default {
-  name: 'ShowUsers',
+  name: 'ShowSeries',
   data () {
     return {
-      users: [],
+      actors: [],
       search: '',
       selected: [],
       headers: [
-        { text: 'First name', value: 'firstName' },
-        { text: 'Last name', value: 'lastName' },
-        { text: 'Email', value: 'email' },
-        { text: 'Password', value: 'password' },
-        { text: 'User ID', value: 'id' }
+        { text: 'Thumbnail', value: 'thumbnail' },
+        { text: 'First name', value: 'firstname' },
+        { text: 'Last name', value: 'lastname' }
       ]
     }
   },
@@ -76,14 +74,14 @@ export default {
   },
   methods: {
     deleteSelected () {
-      let deleteUser = firebase.functions().httpsCallable('deleteUser')
-      this.selected.forEach(user => {
-        deleteUser({ id: user.id })
+      let deleteActor = firebase.functions().httpsCallable('deleteActor')
+      this.selected.forEach(actor => {
+        deleteActor({ firstName: actor.firstName, lastName: actor.lastName})
       })
     }
   },
   firestore: {
-    users: db.collection('users')
+    actors: db.collection('actors')
   }
 }
 </script>

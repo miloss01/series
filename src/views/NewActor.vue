@@ -74,6 +74,13 @@ export default {
         image: this.actor.image
       }
       this.$store.dispatch('uploadActor', newActor)
+      this.clearForm()
+    },
+    clearForm() {
+      this.firstName = null
+      this.lastName = null
+      this.imageUrl = null
+      this.image = null
     }
   }
 }
