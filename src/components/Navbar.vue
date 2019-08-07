@@ -16,6 +16,12 @@
           <Signup v-if="!userIsAuth"></Signup>
         </v-flex>
         <v-flex xs12>
+          <v-btn v-if="user" :to="{ name: 'preview'}" flat>
+            <span class="font-weight-light"> {{ user.firstName }} &nbsp;</span>
+            <span> {{ user.lastName }} </span>
+          </v-btn>
+        </v-flex>
+        <v-flex xs12>
           <v-btn flat v-if="userIsAuth" @click="logout">
             <span>Logout</span>
           </v-btn>
@@ -34,7 +40,11 @@
       <v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon>
       <Login class="hidden-xs-only" v-if="!userIsAuth"></Login>
       <Signup class="hidden-xs-only" v-if="!userIsAuth"></Signup>
-      <v-btn class="hidden-xs-only" flat v-if="userIsAuth" @click="logout">
+      <v-btn replace v-if="user" :to="{ name: 'profile', params: { id: user.id }}" flat>
+        <span class="font-weight-light"> {{ user.firstName }} &nbsp;</span>
+        <span> {{ user.lastName }} </span>
+      </v-btn>
+      <v-btn class="hidden-xs-only" flat outline color="white" v-if="userIsAuth" @click="logout">
         <span>Logout</span>
       </v-btn>
     </v-toolbar>
@@ -44,6 +54,8 @@
 <script>
 import Signup from './Signup'
 import Login from './Login'
+import { db } from '@/firebase'
+import firebase from 'firebase'
 
 export default {
   name: 'Navbar',
@@ -53,8 +65,19 @@ export default {
   },
   data () {
     return {
-      sideNav: false
+      sideNav: false,
+      user: null
     }
+  },
+  beforeMount () {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        const userId = this.$store.getters.user.id
+        db.collection('users').doc(userId).get().then(doc => this.user = doc.data())
+      } else {
+        this.user = null
+      }
+    })
   },
   computed: {
     userIsAuth () {
