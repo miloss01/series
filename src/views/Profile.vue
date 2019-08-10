@@ -16,15 +16,25 @@ export default {
       user: null
     }
   },
-  beforeMount () {
-    const userId = this.$route.params.id
-    db.collection('users').doc(userId).get()
-    .then(doc => {
-      this.user = doc.data()
-    })
-    .catch(error => {
-      console.log(error)
-    })
+  created () {
+    const id = this.$route.params.id
+    this.getUser(id)
+  },
+  watch: {
+    '$route.params.id' (id) {
+      this.getUser(id)
+    }
+  },
+  methods: {
+    getUser (userId) {
+      db.collection('users').doc(userId).get()
+      .then(doc => {
+        this.user = doc.data()
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    }
   }
 }
 </script>

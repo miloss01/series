@@ -40,7 +40,7 @@
       <v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon>
       <Login class="hidden-xs-only" v-if="!userIsAuth"></Login>
       <Signup class="hidden-xs-only" v-if="!userIsAuth"></Signup>
-      <v-btn replace v-if="user" :to="{ name: 'profile', params: { id: user.id }}" flat>
+      <v-btn v-if="user" :to="{ name: 'profile', params: { id: user.id }}" flat>
         <span class="font-weight-light"> {{ user.firstName }} &nbsp;</span>
         <span> {{ user.lastName }} </span>
       </v-btn>

@@ -5,6 +5,7 @@ import NewSerie from './views/NewSerie.vue'
 import NewActor from './views/NewActor.vue'
 import Preview from './views/Preview.vue'
 import Profile from './views/Profile.vue'
+import NoPage from './views/NoPage.vue'
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -46,6 +47,11 @@ const router = new Router({
       path: '/profile/:id',
       name: 'profile',
       component: Profile
+    },
+    {
+      path: '*',
+      name: '404',
+      component: NoPage
     },
     {
       path: '/about',

@@ -10,7 +10,9 @@ export default new Vuex.Store({
   state: {
     currentUser: null,
     serie: null,
-    actor: null
+    actor: null,
+    error: null,
+    loading: false
   },
 
   getters: {
@@ -22,6 +24,12 @@ export default new Vuex.Store({
     },
     actor (state) {
       return state.actor
+    },
+    error (state) {
+      return state.error
+    },
+    loading (state) {
+      return state.loading
     }
   },
 
@@ -34,6 +42,12 @@ export default new Vuex.Store({
     },
     setActor (state, payload) {
       state.actor = payload
+    },
+    setError (state, payload) {
+      state.error = payload.message
+    },
+    setLoading (state, payload) {
+      state.error = payload
     }
   },
 
