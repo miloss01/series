@@ -77,10 +77,10 @@ export default {
       this.clearForm()
     },
     clearForm() {
-      this.firstName = null
-      this.lastName = null
-      this.imageUrl = null
-      this.image = null
+      this.actor.firstName = null
+      this.actor.lastName = null
+      this.actor.imageUrl = null
+      this.actor.image = null
     }
   }
 }
