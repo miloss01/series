@@ -18,6 +18,8 @@ exports.deleteSerie = functions.https.onCall(async (data, context) => {
   try {
     await admin.firestore().collection('series').doc(data.title).delete()
     console.log('Serie(s) is/are deleted from database.')
+    await admin.storage().bucket().file('series/' + data.title).delete()
+    console.log('Serie(s) image(s) is/are deleted from storage.')
   }
   catch (error) {
     throw new functions.https.HttpsError(error)

@@ -7,7 +7,14 @@
             <v-card-title style="background-color: #346beb">
               <h2 class="subheader font-weight-light text-uppercase white--text">users</h2>
               <v-spacer></v-spacer>
-              <v-btn outline dark depressed flat :disabled="ifSelected" @click="deleteSelected">Delete selected</v-btn>
+              <v-btn outline dark depressed flat :disabled="ifSelected" @click="deleteSelected" :loading="loading">
+                Delete selected
+                <template v-slot:loader>
+                  <span class="custom-loader">
+                    <v-icon light>cached</v-icon>
+                  </span>
+                </template>
+              </v-btn>
             </v-card-title>
             <v-card-text>
               <v-flex xs12 sm6>
@@ -72,13 +79,21 @@ export default {
         return true
       else 
         return false
+    },
+    loading () {
+      return this.$store.getters.loading
     }
   },
   methods: {
     deleteSelected () {
       let deleteUser = firebase.functions().httpsCallable('deleteUser')
       this.selected.forEach(user => {
+        this.$store.dispatch('setLoading', true)
         deleteUser({ id: user.id })
+        .then(() => {
+          this.$store.dispatch('setLoading', false)
+          console.log('successful user deletion')
+        })
       })
     }
   },
