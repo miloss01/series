@@ -5,6 +5,9 @@ import router from './router'
 import store from './store'
 import firebase from 'firebase'
 
+import Alert from '@/components/Alert'
+Vue.component('app-alert', Alert)
+
 import { firestorePlugin } from 'vuefire'
 Vue.use(firestorePlugin)
 

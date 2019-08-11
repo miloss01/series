@@ -9,7 +9,15 @@ export default {
   },
   mutations: {
     setError (state, payload) {
-      state.error = payload.message
+      state.error = payload
+    },
+    clearError (state) {
+      state.error = null
+    }
+  },
+  actions: {
+    clearError ({commit}) {
+      commit('clearError')
     }
   }
 }

@@ -9,7 +9,7 @@ export default {
   },
   mutations: {
     setLoading (state, payload) {
-      state.error = payload
+      state.loading = payload
     }
   }
 }
