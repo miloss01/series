@@ -61,7 +61,7 @@ export default {
           id: user.user.uid
         }
         commit('setUser', newUser)
-        router.push({ name: 'new-serie' })
+        router.push({ name: 'admin' })
       })
       .catch(error => {
         commit('setLoading', false)

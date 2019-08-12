@@ -7,6 +7,7 @@ import Preview from './views/Preview.vue'
 import Profile from './views/Profile.vue'
 import NoPage from './views/NoPage.vue'
 import Admin from './views/Admin.vue'
+import Tracker from './views/Tracker.vue'
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -48,6 +49,14 @@ const router = new Router({
       path: '/admin',
       name: 'admin',
       component: Admin,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/tracker',
+      name: 'tracker',
+      component: Tracker,
       meta: {
         requiresAuth: true
       }
