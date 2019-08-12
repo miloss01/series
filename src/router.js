@@ -6,6 +6,7 @@ import NewActor from './views/NewActor.vue'
 import Preview from './views/Preview.vue'
 import Profile from './views/Profile.vue'
 import NoPage from './views/NoPage.vue'
+import Admin from './views/Admin.vue'
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -39,6 +40,14 @@ const router = new Router({
       path: '/preview',
       name: 'preview',
       component: Preview,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: Admin,
       meta: {
         requiresAuth: true
       }
