@@ -19,6 +19,7 @@ export default {
     return {
       btns: [
         { text: 'Preview', color: 'purple', link: { name: 'preview'} },
+        { text: 'Tracker', color: 'blue lighten-2', link: { name: 'tracker'} },
         { text: 'New Serie', color: '#eb4034', link: { name: 'new-serie'} },
         { text: 'New Actor', color: 'green darken-3', link: { name: 'new-actor'} },
       ]

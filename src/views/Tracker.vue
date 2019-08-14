@@ -11,8 +11,10 @@
           <v-card-actions>
             <v-select
               v-model="select"
-              :items="showSeries"
+              :items="seriesInCombobox"
               chips
+              label="Choose serie to keep track of:"
+              clearable
             >
               <template v-slot:selection="data">
                 <v-chip
@@ -65,23 +67,51 @@ export default {
       select: null,
       series: [],
       seriesInCombobox: [],
-      image: null
+      image: null,
+      inTracker: [],
+      userId: null
     }
   },
+  created () {
+    // TREBA DA SE SREDI DA KADA UBACIM NOVU SERIJU U TRACKER DA REFRESUJE COMBOBOX
+    this.userId = this.$store.getters.user.id
+
+    db.collection('users').doc(this.userId).onSnapshot(doc => {
+      this.inTracker = doc.data().tracker
+      console.log(this.inTracker)
+
+      if (this.inTracker) {
+        this.series.forEach(serie => {
+          if (!this.inTracker.includes(serie.title))
+            this.seriesInCombobox.push(serie.title)
+        })
+      } else {
+        this.series.forEach(serie => {
+          this.seriesInCombobox.push(serie.title)
+        })
+      }
+    })
+  },
   methods: {
+    // ubacivanje u tracker array radi -->
     setSerie () {
-      this.$store.dispatch('setLoading', true)
-      console.log(this.select)
-      this.$store.dispatch('setLoading', false)
+      if (this.select) {
+        this.$store.dispatch('setLoading', true)
+        db.collection('users').doc(this.userId).update({ tracker: firebase.firestore.FieldValue.arrayUnion(this.select) })
+        .then(() => {
+          console.log('success')
+          this.seriesInCombobox = this.seriesInCombobox.filter(serie => serie !== this.select)
+          this.select = null
+          this.$store.dispatch('setLoading', false)
+        })
+        .catch(error => {
+          console.log(error)
+          this.$store.dispatch('setLoading', false)
+        })
+      }
     }
   },
   computed: {
-    showSeries () {
-      this.series.forEach(serie => {
-        this.seriesInCombobox.push(serie.title)
-      })
-      return this.seriesInCombobox
-    },
     loading () {
       return this.$store.getters.loading
     },
