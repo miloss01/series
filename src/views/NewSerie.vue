@@ -50,9 +50,6 @@
           </v-form>
         </v-card>
       </v-layout>
-      <v-layout row wrap>
-        {{ serie }}
-      </v-layout>
     </v-container>
   </div>
 </template>

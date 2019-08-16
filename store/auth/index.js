@@ -37,7 +37,7 @@ export default {
         .then(() => {
           commit('setUser', newUser)
           commit('setLoading', false)
-          router.push({ name: 'new-serie' })
+          router.push({ name: 'tracker' })
         })
         .catch(error => {
           commit('setLoading', false)
@@ -61,7 +61,7 @@ export default {
           id: user.user.uid
         }
         commit('setUser', newUser)
-        router.push({ name: 'admin' })
+        router.push({ name: 'tracker' })
       })
       .catch(error => {
         commit('setLoading', false)
@@ -74,6 +74,7 @@ export default {
         id: payload.uid
       }
       commit('setUser', newUser)
+      router.push({ name: 'tracker' })
     },
     logout ({commit}) {
       firebase.auth().signOut()

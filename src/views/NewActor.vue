@@ -26,9 +26,6 @@
           </v-form>
         </v-card>
       </v-layout>
-      <v-layout row wrap>
-        {{ actor }}
-      </v-layout>
     </v-container>
   </div>
 </template>
