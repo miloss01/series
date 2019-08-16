@@ -84,7 +84,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(rec => rec.meta.requiresAuth)) {
-    if(firebase.auth().currentUser)
+    if (firebase.auth().currentUser)
       next()
     else
       next({ name: 'home' })
