@@ -26,7 +26,7 @@ const router = new Router({
       name: 'new-serie',
       component: NewSerie,
       meta: {
-        requiresAuth: true
+        requiresAdmin: true
       }
     },
     {
@@ -34,7 +34,7 @@ const router = new Router({
       name: 'new-actor',
       component: NewActor,
       meta: {
-        requiresAuth: true
+        requiresAdmin: true
       }
     },
     {
@@ -42,7 +42,7 @@ const router = new Router({
       name: 'preview',
       component: Preview,
       meta: {
-        requiresAuth: true
+        requiresAdmin: true
       }
     },
     {
@@ -50,15 +50,18 @@ const router = new Router({
       name: 'admin',
       component: Admin,
       meta: {
-        requiresAuth: true
+        requiresAdmin: true
       }
     },
     {
       path: '/tracker',
       name: 'tracker',
       component: Tracker,
-      meta: {
-        requiresAuth: true
+      beforeEnter: (to, from, next) => {
+        if (firebase.auth().currentUser)
+          next()
+        else
+          next({ name: 'home' })
       }
     },
     {
@@ -83,8 +86,8 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(rec => rec.meta.requiresAuth)) {
-    if (firebase.auth().currentUser)
+  if (to.matched.some(rec => rec.meta.requiresAdmin)) {
+    if (firebase.auth().currentUser && firebase.auth().currentUser.uid == 'NrwueO9AI6bu2Bjxh0Ye7wgclIv2')
       next()
     else
       next({ name: 'home' })

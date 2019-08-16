@@ -88,7 +88,7 @@
 <script>
 import firebase from 'firebase'
 import { db } from '@/firebase'
-import { constants } from 'crypto';
+
 export default {
   name: 'Tracker',
   data () {
