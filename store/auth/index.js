@@ -17,6 +17,40 @@ export default {
     }
   },
   actions: {
+    signInWithGoogle ({commit}) {
+      commit('setLoading', true)
+      var provider = new firebase.auth.GoogleAuthProvider()
+      firebase.auth().signInWithPopup(provider)
+      .then(result => {
+        commit('setLoading', false)
+        var user = result.user
+        console.log(user)
+        const dbUser = {
+          id: user.uid,
+          email: user.email,
+          firstName: user.displayName.split(' ')[0],
+          lastName: user.displayName.split(' ')[1]
+        }
+        const newUser = {
+          id: user.uid
+        }
+        db.collection('users').doc(dbUser.id).set(dbUser)
+        .then(() => {
+          commit('setUser', newUser)
+          commit('setLoading', false)
+          // router.push({ name: 'tracker' })
+          router.go({ name: 'tracker' })
+        })
+        .catch(error => {
+          commit('setLoading', false)
+          commit('setError', error)
+          console.log(error)
+        })
+      }).catch(function(error) {
+        commit('setLoading', false)
+        console.log(error)
+      })
+    },
     signup ({commit}, payload) {
       commit('setLoading', true)
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
@@ -37,7 +71,8 @@ export default {
         .then(() => {
           commit('setUser', newUser)
           commit('setLoading', false)
-          router.push({ name: 'tracker' })
+          // router.push({ name: 'tracker' })
+          router.go({ name: 'tracker' })
         })
         .catch(error => {
           commit('setLoading', false)
@@ -61,7 +96,8 @@ export default {
           id: user.user.uid
         }
         commit('setUser', newUser)
-        router.push({ name: 'tracker' })
+        // router.push({ name: 'tracker' })
+        router.go({ name: 'tracker' })
       })
       .catch(error => {
         commit('setLoading', false)
@@ -74,7 +110,6 @@ export default {
         id: payload.uid
       }
       commit('setUser', newUser)
-      router.push({ name: 'tracker' })
     },
     logout ({commit}) {
       firebase.auth().signOut()

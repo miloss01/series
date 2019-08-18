@@ -1,12 +1,12 @@
 <template>
   <v-dialog max-width="400px" v-model="loginDialog">
     <v-btn flat slot="activator">
-      <span>Log in</span>
+      <span>Sign in</span>
     </v-btn>
     <form @submit.prevent="login">
       <v-card dark>
         <v-card-title>
-          <span class="title font-weight-light">Log in</span>
+          <span class="title font-weight-light">Sign in</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
@@ -28,7 +28,15 @@
           <v-spacer></v-spacer>
           <v-btn color="primary lighten-1" flat @click="loginDialog = false">Close</v-btn>
           <v-btn type="submit" color="green darken-1" flat outline :disabled="loading" :loading="loading">
-            Log in
+            Sign in
+            <template v-slot:loader>
+              <span class="custom-loader">
+                <v-icon light>cached</v-icon>
+              </span>
+            </template>
+          </v-btn>
+          <v-btn @click="signInGoogle" color="white" flat outline :disabled="loading" :loading="loading">
+            Sign in with Google
             <template v-slot:loader>
               <span class="custom-loader">
                 <v-icon light>cached</v-icon>
@@ -62,6 +70,9 @@ export default {
   methods: {
     login () {
       this.$store.dispatch('login', {email: this.email, password: this.password})
+    },
+    signInGoogle () {
+      this.$store.dispatch('signInWithGoogle')
     },
     onDismissed () {
       this.$store.dispatch('clearError')

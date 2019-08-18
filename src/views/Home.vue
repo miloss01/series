@@ -7,7 +7,10 @@
           <span class="white--text">Series</span>
         </h1>
         <h4 class="subheading mb-5">Check your series and keep notes of progress!</h4>
-        <v-btn color="white" outline depressed :to="{ name: 'tracker' }">List series</v-btn>
+        <small class="mb-5" v-if="!userIsAuth">*You must be logged in to track series...</small>
+        <v-btn color="white" outline depressed :to="{ name: 'tracker' }" :disabled="!userIsAuth">
+          track series
+        </v-btn>
       </v-layout>
     </v-parallax>
 
@@ -161,6 +164,11 @@
           { title: 'Support', icon: 'contact_support'},
           { title: 'Free', icon: 'credit_card'}
         ]
+      }
+    },
+    computed: {
+      userIsAuth () {
+        return this.$store.getters.user !== null && this.$store.getters.user !== undefined
       }
     }
   }
