@@ -25,24 +25,41 @@
           <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary lighten-1" flat @click="loginDialog = false">Close</v-btn>
-          <v-btn type="submit" color="green darken-1" flat outline :disabled="loading" :loading="loading">
-            Sign in
-            <template v-slot:loader>
-              <span class="custom-loader">
-                <v-icon light>cached</v-icon>
-              </span>
-            </template>
-          </v-btn>
-          <v-btn @click="signInGoogle" color="white" flat outline :disabled="loading" :loading="loading">
-            Sign in with Google
-            <template v-slot:loader>
-              <span class="custom-loader">
-                <v-icon light>cached</v-icon>
-              </span>
-            </template>
-          </v-btn>
+          <v-layout row wrap>
+            <v-flex xs12 mb-2 px-4>
+              <v-btn block type="submit" color="green darken-1" flat outline :disabled="loading" :loading="loading">
+                Sign in
+                <template v-slot:loader>
+                  <span class="custom-loader">
+                    <v-icon light>cached</v-icon>
+                  </span>
+                </template>
+              </v-btn>
+            </v-flex>
+            <v-flex xs12 mb-2 px-4>
+              <v-btn block @click="signInGoogle" color="primary" depressed :disabled="loading" :loading="loading">
+                Sign in with Google
+                <template v-slot:loader>
+                  <span class="custom-loader">
+                    <v-icon light>cached</v-icon>
+                  </span>
+                </template>
+              </v-btn>
+            </v-flex>
+            <v-flex xs12 mb-2 px-4>
+              <v-btn block @click="signInFacebook" color="blue darken-4" depressed :disabled="loading" :loading="loading">
+                Sign in with Facebook
+                <template v-slot:loader>
+                  <span class="custom-loader">
+                    <v-icon light>cached</v-icon>
+                  </span>
+                </template>
+              </v-btn>
+            </v-flex>
+            <v-flex xs12 px-4>
+              <v-btn block color="primary lighten-1" flat @click="loginDialog = false">Close</v-btn>
+            </v-flex>
+          </v-layout>
         </v-card-actions>
       </v-card>
     </form>
@@ -50,6 +67,8 @@
 </template>
 
 <script>
+import firebase from 'firebase'
+
 export default {
   name: 'Login',
   data () {
@@ -72,7 +91,12 @@ export default {
       this.$store.dispatch('login', {email: this.email, password: this.password})
     },
     signInGoogle () {
-      this.$store.dispatch('signInWithGoogle')
+      var provider = new firebase.auth.GoogleAuthProvider()
+      this.$store.dispatch('signInWithProvider', provider)
+    },
+    signInFacebook () {
+      var provider = new firebase.auth.FacebookAuthProvider()
+      this.$store.dispatch('signInWithProvider', provider)
     },
     onDismissed () {
       this.$store.dispatch('clearError')

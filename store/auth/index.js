@@ -17,12 +17,12 @@ export default {
     }
   },
   actions: {
-    signInWithGoogle ({commit}) {
+    signInWithProvider ({commit}, payload) {
       commit('setLoading', true)
-      var provider = new firebase.auth.GoogleAuthProvider()
-      firebase.auth().signInWithPopup(provider)
+      firebase.auth().signInWithPopup(payload)
       .then(result => {
         commit('setLoading', false)
+        commit('clearError')
         var user = result.user
         console.log(user)
         const dbUser = {
@@ -46,8 +46,9 @@ export default {
           commit('setError', error)
           console.log(error)
         })
-      }).catch(function(error) {
+      }).catch(error => {
         commit('setLoading', false)
+        commit('setError', error)
         console.log(error)
       })
     },
