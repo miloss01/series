@@ -53,33 +53,43 @@
         </v-card>
       </v-layout>
 
-      <v-layout row wrap justify-center v-if="this.tracker">
-        <v-card v-for="track in tracker" :key="track.title" min-width="600" tile class="pa-3 mb-2" dark>
-          <v-card-title style="background-color: #2f2f2f">
-            <h3 class="white--text headline">{{ track.title }}</h3>
-          </v-card-title>
-          <v-card-actions>
-            <v-layout row wrap>
-              <v-flex xs5>
-                <v-text-field min="0" step="1" type="number" label="Season" :value="track.season" 
-                @change="track.season = $event"></v-text-field>
-              </v-flex>
+      <v-card tile class="py-2 my-3 mx-2">
+        <v-card-text>
+          <h2 class="headline font-weight-light text-uppercase primary--text">tracker</h2>
+        </v-card-text>
+      </v-card>
+
+      <v-layout row wrap v-if="this.tracker">
+        <v-flex xs12 sm6 md4 lg3 v-for="track in tracker" :key="track.title">
+          <v-card tile class="pa-3 ma-2" :img="track.imageUrl" dark>
+            <v-card-title style="background-color: rgba(0,0,0,0.9)">
+              <router-link :to="{ name: 'serie', params: { title: track.title }}" style="text-decoration: none">
+                <h3 class="white--text headline">{{ track.title }}</h3>
+              </router-link>
+            </v-card-title>
+            <v-card-actions style="background-color: rgba(0,0,0,0.9)">
+              <v-layout row wrap>
+                <v-flex xs5>
+                  <v-text-field min="0" step="1" type="number" label="Season" :value="track.season" 
+                  @change="track.season = $event"></v-text-field>
+                </v-flex>
+                <v-spacer></v-spacer>
+                <v-flex xs5>
+                  <v-text-field min="0" step="1" type="number" label="Episode" :value="track.episode"
+                  @change="track.episode = $event"></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-card-actions>
+            <v-card-actions style="background-color: rgba(0,0,0,0.9)">
               <v-spacer></v-spacer>
-              <v-flex xs5>
-                <v-text-field min="0" step="1" type="number" label="Episode" :value="track.episode"
-                @change="track.episode = $event"></v-text-field>
-              </v-flex>
-            </v-layout>
-          </v-card-actions>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn 
-              color="green darken-3" 
-              depressed 
-              @click="updateTrack({ title: track.title, season: track.season, episode: track.episode })" class="mr-3">update</v-btn>
-            <v-btn color="primary" depressed @click="deleteTrack(track.title)">delete</v-btn>
-          </v-card-actions>
-        </v-card>
+              <v-btn 
+                color="green darken-3" 
+                depressed 
+                @click="updateTrack({ title: track.title, season: track.season, episode: track.episode })" class="mr-3">update</v-btn>
+              <v-btn color="primary" depressed @click="deleteTrack(track.title)">delete</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
       </v-layout>
     </v-container>
   </div>
@@ -99,7 +109,8 @@ export default {
       image: null,
       inTracker: [],
       userId: null,
-      tracker: []
+      tracker: [],
+      imageUrl: null
     }
   },
   created () {
@@ -127,16 +138,26 @@ export default {
     })
   },
   methods: {
-    // ubacivanje u tracker array radi -->
-    setSerie () {
+    async setSerie () {
       if (this.select) {
         this.$store.dispatch('setLoading', true)
-        db.collection('users').doc(this.userId).collection('tracker').doc(this.select).set({
+        await db.collection('series').doc(this.select).get()
+        .then(doc => this.imageUrl = doc.data().imageUrl)
+        .catch(error => {
+          console.log(error)
+          this.$store.dispatch('setLoading', false)
+        })
+
+        await db.collection('users').doc(this.userId).collection('tracker').doc(this.select)
+        .set({
           title: this.select,
+          imageUrl: this.imageUrl,
           season: 1,
           episode: 1
         })
-        db.collection('users').doc(this.userId).update({ tracker: firebase.firestore.FieldValue.arrayUnion(this.select) })
+
+        await db.collection('users').doc(this.userId)
+        .update({ tracker: firebase.firestore.FieldValue.arrayUnion(this.select) })
         .then(() => {
           console.log('success')
           this.seriesInCombobox = this.seriesInCombobox.filter(serie => serie !== this.select)

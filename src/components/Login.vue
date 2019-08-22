@@ -15,7 +15,13 @@
                 <v-text-field label="Email*" v-model="email"></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-text-field label="Password*" type="password" v-model="password"></v-text-field>
+                <v-text-field 
+                  label="Password*"
+                  :append-icon="show ? 'visibility' : 'visibility_off'"
+                  :type="show ? 'text' : 'password'"
+                  @click:append="show = !show"
+                  v-model="password">
+                </v-text-field>
               </v-flex>
               <v-flex xs12 v-if="error">
                 <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
@@ -75,7 +81,8 @@ export default {
     return {
       loginDialog: false,
       email: null,
-      password: null
+      password: null,
+      show: false
     }
   },
   computed: {

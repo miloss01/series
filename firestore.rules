@@ -18,5 +18,9 @@ service cloud.firestore {
         	request.auth.uid == 'NrwueO9AI6bu2Bjxh0Ye7wgclIv2'
         );
     }
+    match /newsletter/{documents=**} {
+    	allow read: if request.auth != null && request.auth.uid == 'NrwueO9AI6bu2Bjxh0Ye7wgclIv2'
+      allow write;
+    }
   }
 }

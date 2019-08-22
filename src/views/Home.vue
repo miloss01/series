@@ -123,10 +123,10 @@
               <v-flex xs4>
                 <v-layout row wrap>
                   <v-flex xs12>
-                    <v-text-field dark color="white" type="email" label="Email" prepend-icon="email"></v-text-field>
+                    <v-text-field v-model="email" dark color="white" type="email" label="Email" prepend-icon="email" :rules="[rules.email]"></v-text-field>
                   </v-flex>
                   <v-flex xs12>
-                    <v-btn block color="white" outline depressed>Apply to newsletter</v-btn>
+                    <v-btn block color="white" outline depressed @click="applyNewsletter" :disabled="!emailValid">Apply for newsletter</v-btn>
                   </v-flex>
                 </v-layout>
               </v-flex>
@@ -145,6 +145,21 @@
     name: 'Home',
     data () {
       return {
+        emailValid: false,
+        rules: {
+          email: value => {
+            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            if (pattern.test(value)) {
+              this.emailValid = true
+              return 'Email is formatted well'
+            } else {
+              this.emailValid = false
+              return 'Email is not formatted well'
+            }
+            // return pattern.test(value) || 'nije dobro'
+          }
+        },
+        email: null,
         imgs: [
           require('@/assets/slider/sl1.jpg'),
           require('@/assets/slider/sl2.jpg'),
@@ -169,6 +184,20 @@
     computed: {
       userIsAuth () {
         return this.$store.getters.user !== null && this.$store.getters.user !== undefined
+      }
+    },
+    methods: {
+      applyNewsletter () {
+        db.collection('newsletter').doc(this.email).set({
+          email: this.email
+        })
+        .then(() => {
+          this.email = null
+          alert('You have successfuly applied for newsletter')
+        })
+        .catch(error => {
+          console.log(error)
+        })
       }
     }
   }

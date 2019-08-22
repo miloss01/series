@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import Home from './views/Home.vue'
 import NewSerie from './views/NewSerie.vue'
 import NewActor from './views/NewActor.vue'
@@ -8,6 +9,8 @@ import Profile from './views/Profile.vue'
 import NoPage from './views/NoPage.vue'
 import Admin from './views/Admin.vue'
 import Tracker from './views/Tracker.vue'
+import Serie from './views/Serie.vue'
+
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -68,6 +71,11 @@ const router = new Router({
       path: '/profile/:id',
       name: 'profile',
       component: Profile
+    },
+    {
+      path: '/serie/:title',
+      name: 'serie',
+      component: Serie
     },
     {
       path: '*',
