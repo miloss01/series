@@ -75,7 +75,13 @@ const router = new Router({
     {
       path: '/serie/:title',
       name: 'serie',
-      component: Serie
+      component: Serie,
+      beforeEnter: (to, from, next) => {
+        if (firebase.auth().currentUser)
+          next()
+        else
+          next({ name: 'home' })
+      }
     },
     {
       path: '*',
