@@ -2,55 +2,57 @@
   <div class="tracker">
     <v-container>
       <v-layout row wrap justify-center>
-        <v-card min-width="600" tile class="pa-3 mb-4">
-          <v-card-title style="background-color: #D32F2F">
-            <h2 class="white--text headline">New serie</h2>
-            <v-spacer></v-spacer>
-            <v-icon dark>add_circle</v-icon>
-          </v-card-title>
-          <v-card-actions>
-            <v-select
-              v-model="select"
-              :items="seriesInCombobox"
-              chips
-              label="Choose serie to keep track of:"
-              clearable
-            >
-              <template v-slot:selection="data">
-                <v-chip
-                  color="primary"
-                  dark
-                  outline
-                  :key="JSON.stringify(data.item)"
-                  :selected="data.selected"
-                  :disabled="data.disabled"
-                  class="v-chip--select-multi"
-                  @click.stop="data.parent.selectedIndex = data.index"
-                  @input="data.parent.selectItem(data.item)"
-                >
-                  <v-avatar class="accent white--text">
-                    {{ data.item.slice(0, 1).toUpperCase() }}
-                  </v-avatar>
-                  {{ data.item }}
-                </v-chip>
-              </template>
-            </v-select>
-          </v-card-actions>
-          <v-card-actions v-if="getImage">
-            <v-img :src="getImage" max-width="600" max-height="350" contain></v-img>
-          </v-card-actions>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" depressed flat outline :disabled="loading" :loading="loading" @click="setSerie">
-              Add new
-              <template v-slot:loader>
-                <span class="custom-loader">
-                  <v-icon light>cached</v-icon>
-                </span>
-              </template>
-            </v-btn>
-          </v-card-actions>
-        </v-card>
+        <v-flex xs12 sm8 lg6>
+          <v-card tile class="pa-3 mb-4">
+            <v-card-title style="background-color: #D32F2F">
+              <h2 class="white--text headline">New serie</h2>
+              <v-spacer></v-spacer>
+              <v-icon dark>add_circle</v-icon>
+            </v-card-title>
+            <v-card-actions>
+              <v-select
+                v-model="select"
+                :items="seriesInCombobox"
+                chips
+                label="Choose serie to keep track of:"
+                clearable
+              >
+                <template v-slot:selection="data">
+                  <v-chip
+                    color="primary"
+                    dark
+                    outline
+                    :key="JSON.stringify(data.item)"
+                    :selected="data.selected"
+                    :disabled="data.disabled"
+                    class="v-chip--select-multi"
+                    @click.stop="data.parent.selectedIndex = data.index"
+                    @input="data.parent.selectItem(data.item)"
+                  >
+                    <v-avatar class="accent white--text">
+                      {{ data.item.slice(0, 1).toUpperCase() }}
+                    </v-avatar>
+                    {{ data.item }}
+                  </v-chip>
+                </template>
+              </v-select>
+            </v-card-actions>
+            <v-card-actions v-if="getImage">
+              <v-img :src="getImage" max-width="600" max-height="350" contain></v-img>
+            </v-card-actions>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" depressed flat outline :disabled="loading" :loading="loading" @click="setSerie">
+                Add new
+                <template v-slot:loader>
+                  <span class="custom-loader">
+                    <v-icon light>cached</v-icon>
+                  </span>
+                </template>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
       </v-layout>
 
       <v-card tile class="py-2 my-3 mx-2">
