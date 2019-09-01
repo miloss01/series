@@ -16,9 +16,14 @@
           <Signup v-if="!userIsAuth"></Signup>
         </v-flex>
         <v-flex xs12>
-          <v-btn v-if="user" :to="{ name: 'profile', params: { id: user.id }}" flat>
+          <v-btn outline v-if="user" :to="{ name: 'profile', params: { id: user.id }}" flat>
             <span class="font-weight-light"> {{ user.firstName }} &nbsp;</span>
             <span> {{ user.lastName }} </span>
+          </v-btn>
+        </v-flex>
+        <v-flex xs12>
+          <v-btn flat color="white" v-if="userIsAuth" :to="{ name: 'tracker' }">
+            <span>Tracker</span>
           </v-btn>
         </v-flex>
         <v-flex xs12>
@@ -40,6 +45,9 @@
       <v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon>
       <Login class="hidden-xs-only" v-if="!userIsAuth"></Login>
       <Signup class="hidden-xs-only" v-if="!userIsAuth"></Signup>
+      <v-btn class="hidden-xs-only" flat color="white" v-if="userIsAuth" :to="{ name: 'tracker' }">
+        <span>Tracker</span>
+      </v-btn>
       <v-btn class="hidden-xs-only" v-if="user" :to="{ name: 'profile', params: { id: user.id }}" flat>
         <span class="font-weight-light"> {{ user.firstName }} &nbsp;</span>
         <span> {{ user.lastName }} </span>

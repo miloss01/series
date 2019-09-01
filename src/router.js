@@ -10,6 +10,7 @@ import NoPage from './views/NoPage.vue'
 import Admin from './views/Admin.vue'
 import Tracker from './views/Tracker.vue'
 import Serie from './views/Serie.vue'
+import Series from './views/Series.vue'
 
 import firebase from 'firebase'
 
@@ -65,6 +66,17 @@ const router = new Router({
           next()
         else
           next({ name: 'home' })
+      }
+    },
+    {
+      path: '/series',
+      name: 'series',
+      component: Series,
+      beforeEnter: (to, from, next) => {
+        if (firebase.auth().currentUser)
+          next()
+        else
+          next({ name: 'series' })
       }
     },
     {

@@ -8,7 +8,7 @@
         </h1>
         <h4 class="subheading mb-5">Check your series and keep notes of progress!</h4>
         <small class="mb-5" v-if="!userIsAuth">*You must be logged in to track series...</small>
-        <v-btn color="white" outline depressed :to="{ name: 'tracker' }" :disabled="!userIsAuth">
+        <v-btn color="white" outline depressed :to="{ name: 'series' }" :disabled="!userIsAuth">
           track series
         </v-btn>
       </v-layout>
