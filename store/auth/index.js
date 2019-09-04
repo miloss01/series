@@ -4,23 +4,16 @@ import { db } from '@/firebase'
 
 export default {
   state: {
-    currentUser: null,
-    firstTime: true
+    currentUser: null
   },
   getters: {
     user (state) {
       return state.currentUser
-    },
-    firstTime (state) {
-      return state.firstTime
     }
   },
   mutations: {
     setUser (state, payload) {
       state.currentUser = payload
-    },
-    setFirstTime (state, payload) {
-      state.firstTime = payload
     }
   },
   actions: {

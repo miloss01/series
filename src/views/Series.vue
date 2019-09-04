@@ -2,8 +2,9 @@
   <div class="series">
     <v-container>
       <h3 class="display-2 primary--text text-xs-center font-weight-thin my-5 text-uppercase">explore series</h3>
-      <v-layout row wrap mt-5 justify-center>
-        <v-flex xs12 sm4 md3 lg2 v-for="serie in showSeries" :key="serie.title" pa-3>
+      <p v-if="series.length == 0" class="primary--text body-2 text-xs-center my-4 text-uppercase">you are tracking all series or there is some error</p>
+      <v-layout row wrap mt-5 justify-center v-if="series">
+        <v-flex xs12 sm4 md3 lg2 v-for="serie in series" :key="serie.title" pa-3>
           <v-card tile flat>
             <v-card-title class="px-0 py-2">
               <router-link :to="{ name: 'serie', params: { title: serie.title }}" style="text-decoration: none">
@@ -31,32 +32,16 @@ export default {
   data () {
     return {
       series: [],
-      inTracker: [],
-      showSeries: []
+      inTracker: []
     }
   },
   created () {
-    const firstTime = this.$store.getters.firstTime
-    if(firstTime == false) {
-      this.$store.commit('setFirstTime', true)
-      this.$router.go()
-    } else {
-      this.$store.commit('setFirstTime', false)
-    }
     const userId = this.$store.getters.user.id
-    db.collection('users').doc(userId).onSnapshot(doc => {
+    db.collection('users').doc(userId).get()
+    .then(doc => {
       this.inTracker = doc.data().tracker
-      console.log(this.inTracker)
-
       if (this.inTracker) {
-        this.series.forEach(serie => {
-          if (!this.inTracker.includes(serie.title))
-            this.showSeries.push(serie)
-        })
-      } else {
-        this.series.forEach(serie => {
-          this.showSeries.push(serie)
-        })
+        this.series = this.series.filter(serie => !this.inTracker.includes(serie.title))
       }
     })
   },
@@ -77,7 +62,7 @@ export default {
 
       await db.collection('users').doc(userId)
       .update({ tracker: firebase.firestore.FieldValue.arrayUnion(payload.title) })
-      .then(() => this.$router.go())
+      .then(() => this.$router.push({ name: 'tracker' }))
     }
   }
 }
