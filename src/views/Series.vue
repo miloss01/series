@@ -2,9 +2,18 @@
   <div class="series">
     <v-container>
       <h3 class="display-2 primary--text text-xs-center font-weight-thin my-5 text-uppercase">explore series</h3>
-      <p v-if="series.length == 0" class="primary--text body-2 text-xs-center my-4 text-uppercase">you are tracking all series or there is some error</p>
-      <v-layout row wrap mt-5 justify-center v-if="series">
-        <v-flex xs12 sm4 md3 lg2 v-for="serie in series" :key="serie.title" pa-3>
+      <v-layout row wrap style="background-color: #e9ebf0" px-3 py-2>
+        <v-flex xs12 sm4 md3>
+          <v-select  prepend-inner-icon="category" height="35" v-model="filteredCategories" :items="categories" chips label="Category" multiple></v-select>
+        </v-flex>
+        <v-spacer></v-spacer>
+        <v-flex xs12 sm4 md3>
+          <v-text-field label="Search" height="35" v-model="search" prepend-inner-icon="search"></v-text-field>
+        </v-flex>
+      </v-layout>
+      <p v-if="filteredSeries.length == 0" class="primary--text body-2 text-xs-center my-4 text-uppercase">you are tracking all series or there is some error</p>
+      <v-layout row wrap mt-5 v-if="series">
+        <v-flex xs12 sm4 md3 lg2 v-for="serie in filteredSeries" :key="serie.title" pa-3>
           <v-card tile flat>
             <v-card-title class="px-0 py-2">
               <router-link :to="{ name: 'serie', params: { title: serie.title }}" style="text-decoration: none">
@@ -32,7 +41,12 @@ export default {
   data () {
     return {
       series: [],
-      inTracker: []
+      inTracker: [],
+      search: '',
+      categories: [
+        'Crime', 'Drama', 'Mistery', 'Comedy', 'Horror', 'Sci-Fi'
+      ],
+      filteredCategories: []
     }
   },
   created () {
@@ -44,6 +58,20 @@ export default {
         this.series = this.series.filter(serie => !this.inTracker.includes(serie.title))
       }
     })
+  },
+  computed: {
+    filteredSeries () {
+      // Filtering by selected categories.
+      const filteredSeries = this.series.filter(serie => {
+        return this.filteredCategories.every(category => {
+          return serie.category.includes(category)
+        })
+      })
+      // Further filtering by search word.
+      return filteredSeries.filter(serie => {
+          return serie.title.toLowerCase().includes(this.search.toLowerCase())
+      })
+    }
   },
   firestore: {
     series: db.collection('series')
